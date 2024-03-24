@@ -1,51 +1,46 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Strawberry Foundations",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/logo.svg",
+    "light": "/logo/logo.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#0D93FF",
+    "light": "#07C9FF",
+    "dark": "#0D93FF",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#0D93FF",
+      "to": "#07C9FF"
     }
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Our GitHub",
+      "url": "https://github.com/Strawberry-Foundations/"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Visit our Website",
+    "url": "https://strawberryfoundations.xyz/"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "StrawberryOS",
       "url": "api-reference"
     }
   ],
   "anchors": [
     {
-      "name": "Documentation",
+      "name": "Developer Documentation",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "url": "https://developers.strawberryfoundations.xyz/"
     },
     {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Strawberry ID",
+      "icon": "user",
+      "url": "https://id.strawberryfoundations.xyz/v2"
     }
   ],
   "navigation": [
@@ -79,13 +74,12 @@
       "pages": [
         "api-reference/endpoint/get",
         "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/endpoint/delete" 
       ]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "twitter": "https://twitter.com/strawberryfnds",
+    "github": "https://github.com/Strawberry-Foundations"
   }
 }
