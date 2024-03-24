@@ -29,3 +29,33 @@ or
 ```
 # ls /usr/share/keymaps/i386/<your_layout>
 ```
+
+To select a different keyboard layout, you must enter the name of your desired keyboard layout as the argument of the loadkeys command. For the German keyboard layout as follows:
+
+```
+# loadkeys de-latin1
+```
+
+### Verify the boot mode
+To check whether your computer supports UEFI, you can check the UEFI-Bitness.
+
+```
+# cat /sys/firmware/efi/fw_platform_size
+```
+
+If this command returns `64`, it means that your computer supports UEFI and you have booted with UEFI. 
+If the command fails, it means that your computer does not support UEFI or was not started with UEFI. 
+
+### Network
+Make sure you are connected to the Internet if you want to continue with the installation. 
+You can execute the following command to enumerate your connections:
+
+```
+# ip link
+```
+
+You can then check whether your connection is working by pinging a server of your choice:
+
+```
+# ping strawberryfoundations.xyz
+```
