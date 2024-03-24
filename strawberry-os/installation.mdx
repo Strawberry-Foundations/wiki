@@ -195,5 +195,73 @@ If you have created a swap partition, you can enable it with `swapon`:
 # swapon /dev/swap_partition
 ```
 
+---
 
 ## **2.**  Installation
+Now we can finally start the installation. 
+
+### Bootstrapping your system
+The first step to get the basic system is to download and configure StrawberryOS.
+Our tool `os-bootstrap` will help you.
+
+```
+# os-bootstrap install -t /mnt/system
+```
+This installs the basics (`base`) of StrawberryOS to `/mnt/system`.
+However, there are other packages that you can install to help you have a more complete system.
+The following packages are available:
+
+| Name          | Description |
+| ------------- | ------------ |
+| `base`        | The minimum requirements to install StrawberryOS |
+| `base-dev`    | Various development tools for software development |
+| `utils`       | Useful tools |
+| `python3`     | The application & development kit for python3 |
+
+---
+
+## **3.**  Configuring your system
+### Initramfs
+Now we have to configure the Initram file system of our system. 
+Our `os-bootstrap` tool simplifies this task for you. 
+
+```
+# os-bootstrap initramfs install -d /dev/base_partition -t /mnt/system
+```
+
+<AccordionGroup>
+  <Accordion title="Manual installation" icon="computer" iconType="duotone">
+  You can also configure the initramfs manually, which takes more time.
+
+  First download the StrawberryOS Initramfs Tools:
+  ```
+  # wget https://oscdn.strawberryfoundations.xyz/bootstrap/initramfs.tar
+  ```
+
+  Then extract the archive:
+  ```
+  # mkdir initramfs
+  # mv initramfs.tar initramfs
+  # cd initramfs
+  # tar xfz initramfs.tar
+  ```
+
+  Now you have to patch the Initramfs tools.
+  To do this, open the init file with the editor of your choice and search for `sda2` .
+  Replace this with the real data partition (eg `nvme0n1p2`). 
+
+  Install initramfs tools:
+  ```
+  # mv hook /mnt/system/etc/initramfs-tools/hooks/overlay
+  # mv init /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
+  ```
+
+  Now, update your initramfs
+  ```
+  # echo 'update-initramfs -u' >> regen-initramfs
+  # chmod a+x regen-initramfs
+  # mv regen-initramfs /mnt/system/usr/local/bin/regen-initramfs
+  # bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp regen-initramfs
+  ```
+  </Accordion>
+</AccordionGroup>
