@@ -1,0 +1,31 @@
+---
+title: 'Installation'
+description: 'Learn how to install StrawberryOS on your computer'
+---
+
+## **1.**  Pre-installation
+---
+### Get the StrawberryOS Installation image
+Currently, we only provide Installation Images via GitHub Actions.
+
+### Prepare your boot medium
+There are many different ways to start the StrawberryOS installer.
+You can flash the image on a USB stick, burn a CD/DVD, boot from a PXE netboot server, or use Ventoy.
+
+### Boot the Installer
+Start from the StrawberryOS boot medium containing the installer.
+You can do this by going to the boot menu after switching on your computer.
+To do this, you usually have to press a specific key, for example F12.
+
+### First steps
+After you have started from your installation medium, you will land in a console where the bash shell is started.
+If you are from a region outside the USA, you may want to change your keyboard layout.
+The default keymap is US. Available layouts can be listed with:
+
+```
+# localectl list-keymaps
+```
+or
+```
+# ls /usr/share/keymaps/i386/<your_layout>
+```
