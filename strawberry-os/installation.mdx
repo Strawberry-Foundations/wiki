@@ -262,6 +262,65 @@ Our `os-bootstrap` tool simplifies this task for you.
   # chmod a+x regen-initramfs
   # mv regen-initramfs /mnt/system/usr/local/bin/regen-initramfs
   # bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp regen-initramfs
+  # chmod a+x /mnt/system/etc/initramfs-tools/hooks/overlay
+  # chmod a+x /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
+  # chmod 775 /mnt/system/etc/initramfs-tools/hooks/overlay
+  # chmod 775 /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
   ```
   </Accordion>
 </AccordionGroup>
+
+### Fstab
+*Comming soon*
+
+### Chroot
+We will now begin to fully configure your new system.
+To do this, you must chroot in your new system.
+However, we do not use chroot; We use bwrap:
+
+```
+# bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp bash
+```
+
+### Time
+Configure your time zone with the following command:
+
+```
+# ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+```
+
+Replace Region and City with your actual Region and City (e.g Europe/Berlin)
+
+### Hostname
+Create the hostname file:
+
+```
+# echo strawberryos >> /etc/hostname
+```
+
+### Set root password
+Set your root password:
+
+```
+# passwd
+```
+
+## **4.**  Finalizing your system
+You are almost finished and can start your new system right away!
+Before that, however, there is one more important step to take, and that is to install a bootloader.
+
+### Bootloader
+Currently we only offer installation instructions for GRUB.
+
+<AccordionGroup>
+  <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
+  ```
+  # grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=StrawberryOS
+  ```
+  </Accordion>
+
+  <Accordion title="BIOS system with MBR" icon="hard-drive" iconType="duotone">
+  *Soon*
+  </Accordion>
+</AccordionGroup>
+
