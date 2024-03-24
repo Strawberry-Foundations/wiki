@@ -17,6 +17,8 @@ Start from the StrawberryOS boot medium containing the installer.
 You can do this by going to the boot menu after switching on your computer.
 To do this, you usually have to press a specific key, for example F12.
 
+---
+
 ### First steps
 After you have started from your installation medium, you will land in a console where the bash shell is started.
 If you are from a region outside the USA, you may want to change your keyboard layout.
@@ -59,3 +61,139 @@ You can then check whether your connection is working by pinging a server of you
 ```
 # ping strawberryfoundations.xyz
 ```
+
+---
+
+### Disk partitioning
+Disk partitioning is an important part of the StrawberryOS installation.
+You can use various tools to identify which hard disk you want to partition. 
+For example `lsblk` or `fdisk`:
+
+```
+# fdisk -l
+# lsblk
+```
+
+Only hard disks named such as `sda`, `nvme0n1`, or `mmcblk0` are relevant.
+
+#### Start partitioning your disk
+To start the partitioning of your hard disk, we use the program fdisk.
+If you want to use another program that you prefer, you can do so, but here we will only show you how to partition with fdisk.
+To do this, run `fdisk /dev/the_disk_to_be_partitioned`
+
+<Warning>
+  During this process, all data on the hard disk is deleted.
+  So be sure that the data on the hard disk is backed up!
+</Warning>
+<Tip>
+  If your hard disk already has an EFI partition, do not create a new one.
+  Use the existing one instead.
+</Tip>
+
+#### Example Layouts
+These layouts are only example layouts.
+You can change them according to your preferences. However, the basis of this layout should be adhered to
+
+<AccordionGroup>
+  <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
+| Mount point   | Partition             | Partition type     | Suggested size          |
+| ------------- | --------------------- | ------------------ | ----------------------- |
+| `/mnt/boot`   | `/dev/efi_partition`  | EFI System (FAT32) | 512MB                   |
+| `/mnt/system` | `/dev/base_partition` | Linux (ext4/btrfs) | At least 10GB           |
+| `/mnt/user`   | `/dev/data_partition` | Linux (ext4/btrfs) | Remainder of the device |
+| `[SWAP]`      | `/dev/swap_partition` | Linux swap         | At least 2GB            |
+  </Accordion>
+
+  <Accordion title="BIOS system with MBR" icon="hard-drive" iconType="duotone">
+| Mount point   | Partition             | Partition type     | Suggested size          |
+| ------------- | --------------------- | ------------------ | ----------------------- |
+| `/mnt/system` | `/dev/base_partition` | Linux (ext4/btrfs) | At least 10GB           |
+| `/mnt/user`   | `/dev/data_partition` | Linux (ext4/btrfs) | Remainder of the device |
+| `[SWAP]`      | `/dev/swap_partition` | Linux swap         | At least 2GB            |
+  </Accordion>
+</AccordionGroup>
+
+### Filesystem structure
+Here are 2 examples of successful layouts after you have started the system for the first time.
+Currently they are not relevant, but can help to get a better understanding of the basic structure of StrawberryOS.
+
+<AccordionGroup>
+  <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
+| Mount point   | Partition              | Partition type | Size   |
+| ------------- | ---------------------- | ---------------| -----  |
+| `/      `     | `rootfs` (`overlayfs`) | -              | -      |
+| `/boot`       | `/dev/sda1`            | Linux (ext4)   | 512MB  |
+| `/system`     | `/dev/sda2`            | Linux (ext4)   | 9,3GB  |
+| `/user`       | `/dev/sda3`            | Linux (ext4)   | 10,7GB |
+| `[SWAP]`      | `/dev/sda4`            | Linux swap     | 2GB    |
+  </Accordion>
+
+  <Accordion title="BIOS system with MBR" icon="hard-drive" iconType="duotone">
+| Mount point   | Partition              | Partition type | Size   |
+| ------------- | ---------------------- | ---------------| -----  |
+| `/      `     | `rootfs` (`overlayfs`) | -              | -      |
+| `/system`     | `/dev/sda1`            | Linux (ext4)   | 9,3GB  |
+| `/user`       | `/dev/sda2`            | Linux (ext4)   | 10,7GB |
+| `[SWAP]`      | `/dev/sda3`            | Linux swap     | 2GB    |
+  </Accordion>
+</AccordionGroup>
+
+### Format the partitions
+<Info>
+  Replace the placeholders base_partition, data_partition, swap_partition and efi_partition with the corresponding block devices!
+</Info>
+
+When you have created your partitions, you must first format them so that you can use them. 
+To format your base partition with ext4, you can use the following command, for example: 
+
+```
+# mkfs.ext4 /dev/base_partition
+```
+
+And for your user data partition: 
+```
+# mkfs.ext4 /dev/data_partition
+```
+
+If you have created a swap partition, you must also format it:
+```
+# mkswap /dev/swap_partition
+```
+
+If you have a computer that is equipped with UEFI, you still need to format your previously created EFI partition:
+
+<Warning>
+  Only format the partition if you have also created an EFI partition beforehand.
+  Otherwise, you will delete the existing EFI partition and thus delete the possibility of creating other partitions!!
+</Warning>
+
+```
+# mkfs.fat -F 32 /dev/efi_partition
+```
+
+---
+
+### Mount your file systems
+Now start mounting your freshly created file systems so you can start installing StrawberryOS! 
+Let's start with your base partition: 
+```
+# mount --mkdir /dev/base_partition /mnt/system
+```
+
+Following your data partition:
+```
+# mount --mkdir /dev/data_partition /mnt/user
+```
+
+And for UEFI systems, mount the EFI system partition:
+```
+# mount --mkdir /dev/efi_partition /mnt/boot
+```
+
+If you have created a swap partition, you can enable it with `swapon`:
+```
+# swapon /dev/swap_partition
+```
+
+
+## **2.**  Installation
