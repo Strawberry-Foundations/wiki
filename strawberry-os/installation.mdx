@@ -282,7 +282,9 @@ However, we do not use chroot; We use bwrap:
 # bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp bash
 ```
 
-### Time
+### General configuration
+**Time**
+
 Configure your time zone with the following command:
 
 ```
@@ -291,14 +293,16 @@ Configure your time zone with the following command:
 
 Replace Region and City with your actual Region and City (e.g Europe/Berlin)
 
-### Hostname
+**Hostname**
+
 Create the hostname file:
 
 ```
 # echo strawberryos >> /etc/hostname
 ```
 
-### Set root password
+**Set root password**
+
 Set your root password:
 
 ```
@@ -315,7 +319,7 @@ Currently we only offer installation instructions for GRUB.
 <AccordionGroup>
   <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
   ```
-  # grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=StrawberryOS
+  # grub-install --target=x86_64-efi --efi-directory=/mnt/system/boot/efi --boot-directory=/mnt/system/boot/ --bootloader-id=StrawberryOS
   ```
   </Accordion>
 
@@ -324,3 +328,4 @@ Currently we only offer installation instructions for GRUB.
   </Accordion>
 </AccordionGroup>
 
+### Post-installation
