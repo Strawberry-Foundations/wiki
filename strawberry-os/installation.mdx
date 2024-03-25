@@ -200,9 +200,9 @@ The first step to get the basic system is to download and configure StrawberryOS
 Our tool `os-bootstrap` will help you.
 
 ```
-# os-bootstrap install -t /mnt/system
+# os-bootstrap install -t /mnt/
 ```
-This installs the basics (`base`) of StrawberryOS to `/mnt/system`.
+This installs the basics (`base`) of StrawberryOS to `/mnt/`.
 However, there are other packages that you can install to help you have a more complete system.
 The following packages are available:
 
@@ -221,54 +221,10 @@ Now we have to configure the Initram file system of our system.
 Our `os-bootstrap` tool simplifies this task for you. 
 
 ```
-# os-bootstrap initramfs install -d /dev/data_partition -t /mnt/system
+# os-bootstrap initramfs install -d /dev/data_partition -t /mnt/
 ```
 
-<AccordionGroup>
-  <Accordion title="Manual installation" icon="computer" iconType="duotone">
-  You can also configure the initramfs manually, which takes more time.
-
-  First download the StrawberryOS Initramfs Tools:
-  ```
-  # wget https://oscdn.strawberryfoundations.xyz/bootstrap/initramfs.tar
-  ```
-
-  Then extract the archive:
-  ```
-  # mkdir initramfs
-  # mv initramfs.tar initramfs
-  # cd initramfs
-  # tar xfz initramfs.tar
-  ```
-
-  Now you have to patch the Initramfs tools.
-  To do this, open the init file with the editor of your choice and search for `sda2` .
-  Replace this with the real data partition (eg `nvme0n1p2`). 
-
-  Install initramfs tools:
-  ```
-  # mv hook /mnt/system/etc/initramfs-tools/hooks/overlay
-  # mv init /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
-  ```
-
-  Now, update your initramfs
-  ```
-  # echo 'update-initramfs -u' >> regen-initramfs
-  # chmod a+x regen-initramfs
-  # mv regen-initramfs /mnt/system/usr/local/bin/regen-initramfs
-  # bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp regen-initramfs
-  # chmod a+x /mnt/system/etc/initramfs-tools/hooks/overlay
-  # chmod a+x /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
-  # chmod 775 /mnt/system/etc/initramfs-tools/hooks/overlay
-  # chmod 775 /mnt/system/etc/initramfs-tools/scripts/init-bottom/overlay
-  ```
-  </Accordion>
-</AccordionGroup>
-
-### Fstab
-*Comming soon*
-
-### Chroot
+### Entering your new system
 We will now begin to fully configure your new system.
 To do this, you must chroot in your new system.
 
@@ -304,12 +260,23 @@ You are almost finished and can start your new system right away!
 Before that, however, there is one more important step to take, and that is to install a bootloader.
 
 ### Bootloader
+Before you continue, you must exit the chroot environment if you have not already done so.
+You can easily do this with the `exit` command.
+
 Currently we only offer installation instructions for GRUB.
+To install Grub correctly for StrawberryOS, a setting must be changed first.
+Open the file `/etc/default/grub` and add an `overlay=yes` in the line where `GRUB_CMDLINE_LINUX=""` is written inside the quotation marks.
+It should then look like this: 
+
+``` bash /etc/default/grub
+GRUB_CMDLINE_LINUX="overlay=yes"
+```
+
+Now you can proceed with the installation of Grub for the respective platform.
 
 <AccordionGroup>
   <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
   ```
-  # exit 
   # mount --mkdir /dev/efi_partition /mnt/boot/efi
   # grub-install --efi-directory=/mnt/boot/efi --boot-directory=/mnt/boot/ --bootloader-id=StrawberryOS /dev/sda
   # chroot /mnt
@@ -318,7 +285,11 @@ Currently we only offer installation instructions for GRUB.
   </Accordion>
 
   <Accordion title="BIOS system with MBR" icon="hard-drive" iconType="duotone">
-  *Soon*
+  ```
+  # grub-install --boot-directory=/mnt/boot/ /dev/sda
+  # chroot /mnt
+  # grub-mkconfig -o /boot/grub/grub.cfg
+  ```
   </Accordion>
 </AccordionGroup>
 
