@@ -268,9 +268,6 @@ You are almost finished and can start your new system right away!
 Before that, however, there is one more important step to take, and that is to install a bootloader.
 
 ### Bootloader
-Before you continue, you must exit the chroot environment if you have not already done so.
-You can easily do this with the `exit` command.
-
 Currently we only offer installation instructions for GRUB.
 To install Grub correctly for StrawberryOS, a setting must be changed first.
 Open the file `/etc/default/grub` and add an `overlay=yes` in the line where `GRUB_CMDLINE_LINUX=""` is written inside the quotation marks.
@@ -280,6 +277,8 @@ It should then look like this:
 GRUB_CMDLINE_LINUX="overlay=yes"
 ```
 
+Before you continue, you must exit the chroot environment if you have not already done so.
+You can easily do this with the `exit` command.
 Now you can proceed with the installation of Grub for the respective platform.
 
 <AccordionGroup>
