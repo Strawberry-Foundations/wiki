@@ -229,11 +229,19 @@ We will now begin to fully configure your new system.
 To do this, you must chroot in your new system.
 
 ```
-# mount --bind /dev /mnt/dev
-# mount --bind /sys /mnt/sys
-# mount --bind /proc /mnt/proc
-# chroot /mnt
+# os-bootstrap chroot /mnt
 ```
+
+<AccordionGroup>
+  <Accordion title="Manual chroot" icon="computer" iconType="duotone">
+  ```
+  # mount --bind /dev /mnt/dev
+  # mount --bind /sys /mnt/sys
+  # mount --bind /proc /mnt/proc
+  # chroot /mnt
+  ```
+  </Accordion>
+</AccordionGroup>
 
 ### General configuration
 **Time**
