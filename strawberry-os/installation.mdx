@@ -226,7 +226,7 @@ Now we have to configure the Initram file system of our system.
 Our `os-bootstrap` tool simplifies this task for you. 
 
 ```
-# os-bootstrap initramfs install -d /dev/base_partition -t /mnt/system
+# os-bootstrap initramfs install -d /dev/data_partition -t /mnt/system
 ```
 
 <AccordionGroup>
@@ -276,10 +276,12 @@ Our `os-bootstrap` tool simplifies this task for you.
 ### Chroot
 We will now begin to fully configure your new system.
 To do this, you must chroot in your new system.
-However, we do not use chroot; We use bwrap:
 
 ```
-# bwrap --bind /mnt/system / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp bash
+# mount --bind /dev /mnt/dev
+# mount --bind /sys /mnt/sys
+# mount --bind /proc /mnt/proc
+# chroot /mnt
 ```
 
 ### General configuration
@@ -293,13 +295,6 @@ Configure your time zone with the following command:
 
 Replace Region and City with your actual Region and City (e.g Europe/Berlin)
 
-**Hostname**
-
-Create the hostname file:
-
-```
-# echo strawberryos >> /etc/hostname
-```
 
 **Set root password**
 
@@ -319,7 +314,11 @@ Currently we only offer installation instructions for GRUB.
 <AccordionGroup>
   <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
   ```
-  # grub-install --target=x86_64-efi --efi-directory=/mnt/system/boot/efi --boot-directory=/mnt/system/boot/ --bootloader-id=StrawberryOS
+  # exit 
+  # mount --mkdir /dev/efi_partition /mnt/boot/efi
+  # grub-install --efi-directory=/mnt/boot/efi --boot-directory=/mnt/boot/ --bootloader-id=StrawberryOS /dev/sda
+  # chroot /mnt
+  # grub-mkconfig -o /boot/grub/grub.cfg
   ```
   </Accordion>
 
