@@ -297,7 +297,7 @@ Now you can proceed with the installation of Grub for the respective platform.
   <Accordion title="BIOS system with MBR" icon="hard-drive" iconType="duotone">
   ```
   # grub-install --boot-directory=/mnt/boot/ /dev/sda
-  # chroot /mnt
+  # os-bootstrap chroot /mnt
   # grub-mkconfig -o /boot/grub/grub.cfg
   ```
   </Accordion>
