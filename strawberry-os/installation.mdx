@@ -177,17 +177,12 @@ If you have a computer that is equipped with UEFI, you still need to format your
 Now start mounting your freshly created file systems so you can start installing StrawberryOS! 
 Let's start with your base partition: 
 ```
-# mount --mkdir /dev/base_partition /mnt/system
+# mount --mkdir /dev/base_partition /mnt
 ```
 
-Following your data partition:
+For UEFI systems, mount the EFI system partition:
 ```
-# mount --mkdir /dev/data_partition /mnt/user
-```
-
-And for UEFI systems, mount the EFI system partition:
-```
-# mount --mkdir /dev/efi_partition /mnt/boot
+# mount --mkdir /dev/efi_partition /mnt/boot/efi
 ```
 
 If you have created a swap partition, you can enable it with `swapon`:
