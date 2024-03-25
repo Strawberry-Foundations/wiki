@@ -283,10 +283,13 @@ Now you can proceed with the installation of Grub for the respective platform.
 
 <AccordionGroup>
   <Accordion title="UEFI system with GPT" icon="hard-drive" iconType="duotone">
+  If not already done, mount your EFI partition:
   ```
   # mount --mkdir /dev/efi_partition /mnt/boot/efi
+  ```
+  ```
   # grub-install --efi-directory=/mnt/boot/efi --boot-directory=/mnt/boot/ --bootloader-id=StrawberryOS /dev/sda
-  # chroot /mnt
+  # os-bootstrap chroot /mnt
   # grub-mkconfig -o /boot/grub/grub.cfg
   ```
   </Accordion>
