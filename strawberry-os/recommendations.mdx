@@ -1,0 +1,41 @@
+---
+title: 'General recommendations'
+description: 'General recommendations for your new StrawberryOS system'
+---
+
+# The very first step
+Before you start with the post-installation, you must first chroot into your base system.
+Some of the following processes require direct access to the base system. 
+As the base partition was mounted read-only, it must first be made writable. Our `fsmgr` tool will help you:
+
+```
+# fsmgr system shell
+```
+
+## **1.**  Users
+A new installation of StrawberryOS only has the superuser named `root`.
+This user has all rights, but this is not safe if you want to use StrawberryOS as a desktop operating system. 
+
+You can therefore create a new user who does not have root rights by default. 
+To add a new user, you can use the useradd command: 
+```
+(SystemRoot) # useradd -m -G some_group -s shell username
+```
+| Placeholder | Description |
+| ----------- | ----------- |
+| some_group  | A permission group for the user, e.g. `sudo`, `kvm`, `libvirt`, ... |
+| shell       | Login shell for the user, e.g. `/bin/bash` |
+| username    | Username of the user |
+
+Now change the password of the user:
+```
+(SystemRoot) # passwd username
+```
+
+## **2.**  Graphical user interface (Desktop)
+Having a graphical user interface simplifies many tasks.
+Without a desktop, hardly any software works - so you should install a desktop.
+
+```
+(SystemRoot) # tasksel
+```
