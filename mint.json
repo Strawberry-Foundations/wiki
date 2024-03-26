@@ -54,7 +54,8 @@
       "group": "StrawberryOS",
       "pages": [
         "strawberry-os/introduction",
-        "strawberry-os/installation"
+        "strawberry-os/installation",
+        "strawberry-os/recommendations"
       ]
     }
   ],
